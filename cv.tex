@@ -29,15 +29,15 @@
 % Change the value in the second set of {} to you information. If you
 % want multiple lines (like for the address), use \\ to split lines.
 
-\newcommand{\myname}{First M. Last}     % your name
+\newcommand{\myname}{Michele Garau}     % your name
 \newcommand{\websiteurl}{{https://github.com/btskinner/tex_cv}} % your site url
 \newcommand{\websitename}{me.com}       % short url name for printing
-\newcommand{\phone}{000.000.0000}       % your phone number
-\newcommand{\email}{me@university.edu}  % your email
+\newcommand{\phone}{+47 929 88 438}       % your phone number
+\newcommand{\email}{michele.garau@sintef.no}  % your email
 \newcommand{\address}{                  % NB: Assumes 3 lines
-  University Hall \\                    % {BUILDING} \\
-  PO Box 00000 \\                       % {ADDRESS} \\
-  City, ST 00000                        % {CITY, ST ZIP}
+  SINTEF Energy Research \\                    % {BUILDING} \\
+  Sem Sælands vei 11 \\                       % {ADDRESS} \\
+  7034 Trondheim                        % {CITY, ST ZIP}
 }
 
 % ======================================
@@ -75,186 +75,7 @@ language=american]{biblatex}      % for reference sections
 \usepackage{datetime}             % to make better date formate
 \usepackage[inline]{enumitem}     % more control over lists
 
-% -------------------------------
-% Macros
-% -------------------------------
-
-\newcommand{\RR}{\raggedright\arraybackslash} % left justified
-\newcommand{\RL}{\raggedleft\arraybackslash}  % right justified
-
-% for tables to keep consistent alignment across sections
-\newcolumntype{\twocols}{>{\RR}p{1.25in}>{\RR}X}
-\newcolumntype{\threecols}{>{\RR}p{1.25in}>{\RR}X>{\RL}p{1in}}
-
-% -------------------------------
-% BibLaTeX sorting scheme
-% -------------------------------
-
-% Create a new sorting scheme that will sort in reverse chronological
-% order, taking months into account correctly (i.e., in chronological
-% order and not alphabetical order)
-
-\DeclareSortingScheme{ydmdnt}{
-  \sort{
-    \field{presort}
-  }
-  \sort[final]{
-    \field{sortkey}
-  }
-  \sort[direction=descending]{
-    \field{sortyear}
-    \field{year}
-    \literal{9999}
-  }
-  \sort[direction=descending]{
-    \field[padside=left,padwidth=2,padchar=0]{month}
-    \literal{99}
-  }
-  \sort[direction=descending]{
-    \field[padside=left,padwidth=2,padchar=0]{day}
-    \literal{99}
-  }
-  \sort{
-    \field{sortname}
-    \field{author}
-    \field{editor}
-    \field{translator}
-    \field{sorttitle}
-    \field{title}
-  }
-  \sort{
-    \field{sorttitle}
-  }
-  \sort[direction=descending]{
-    \field[padside=left,padwidth=4,padchar=0]{volume}
-    \literal{9999}
-  }
-}
-
-% -------------------------------
-% BibLaTeX options
-% -------------------------------
-
-% language mapping
-\DeclareLanguageMapping{american}{american-apa}
-
-% ignore addendum and note fields that are sometimes useful, but not here
-\DeclareSourcemap{
-  \maps[datatype=bibtex]{
-    \map{
-      \step[fieldset=addendum, null]
-      \step[fieldset=note, null]
-    } 
-  }
-}
-
-% macro so titles are converted to doi, url, or isbn link (if available)
-% h\t https://tex.stackexchange.com/a/48409
-\ExecuteBibliographyOptions{doi=false,url=false,isbn=false}
-\newbibmacro{string+doiurlisbn}[1]{%
-  \iffieldundef{doi}{%
-    \iffieldundef{url}{%
-      \iffieldundef{isbn}{%
-        \iffieldundef{issn}{%
-          #1%
-        }{%
-          \href{http://books.google.com/books?vid=ISSN\thefield{issn}}{#1}%
-        }%
-      }{%
-        \href{http://books.google.com/books?vid=ISBN\thefield{isbn}}{#1}%
-      }%
-    }{%
-      \href{\thefield{url}}{#1}%
-    }%
-  }{%
-    \href{http://dx.doi.org/\thefield{doi}}{#1}%
-  }%
-}
-
-\DeclareFieldFormat{title}{\usebibmacro{string+doiurlisbn}{\mkbibemph{#1}}}
-\DeclareFieldFormat[article,incollection]{title}%
-{\usebibmacro{string+doiurlisbn}{\mkbibquote{#1}}}
-
-% no letter for same year entries
-\defbibenvironment{mybib}
-{\list
-  {}
-  {\setlength{\leftmargin}{\bibhang}%
-    \setlength{\itemindent}{-\leftmargin}%
-    \setlength{\itemsep}{\bibitemsep}%
-    \setlength{\parsep}{\bibparsep}}}
-{\endlist}
-{\clearfield{extradate}\item}
-
-% filter by year (only print those after year value in \recentyear
-% macro above)
-\defbibcheck{recent}{
-  \iffieldint{year}
-  {\ifnumless{\thefield{year}}{\recentyear}
-    {\skipentry}
-    {}}
-  {\skipentry}
-}
-
-% -------------------------------
-% Document options
-% -------------------------------
-
-% keep lists tight (no extra whitespace)
-\setlist{nolistsep}
-
-% This section determines how the sections are displayed. Adjust these
-% as you like using the titlesec package options.
-
-% section
-\titleformat{\section}[display]
-{\Large\bfseries}
-{\filleft\Large\sectiontitlename~\thesection}
-{}
-{\vspace{-1ex}}
-[]
-
-% subsections
-\titleformat{\subsection}[display]
-{\bfseries}
-{\filleft\subsectiontitlename~\thesubsection}
-{}
-{}
-[\vspace{-1ex}]
-
-% subsubsections
-\titleformat{\subsubsection}[display]
-{}
-{\filleft\subsubsectiontitlename~\thesubsubsection}
-{}
-{}
-[\vspace{-1ex}]
-
-% -------------------------------
-% Headers and Footers
-% -------------------------------
-
-% All pages after the first will have your name and page number in the
-% upper right corner; all pages will have the date of compilation (the
-% latest update) in the bottom right corner. You can move these.
-
-\fancypagestyle{first}{
-   \fancyhead[R]{}
-   \fancyhead[L]{}
-   \fancyfoot[R]{{\itshape Updated: \today}}
-   \fancyfoot[L]{}
-   \fancyfoot[C]{}
-   \renewcommand{\headrulewidth}{0.0pt}
-   \renewcommand{\footrulewidth}{0.0pt}}
-
-\fancypagestyle{rest}{
-   \fancyhead[R]{{\itshape \myname\, $\mid$ \thepage}}
-   \fancyhead[L]{}
-   \fancyfoot[R]{{\itshape Updated: \today}}
-   \fancyfoot[L]{}
-   \fancyfoot[C]{}
-   \renewcommand{\headrulewidth}{0.0pt}
-   \renewcommand{\footrulewidth}{0.0pt}}
+\usepackage{packages}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BEGIN DOCUMENT
@@ -266,7 +87,7 @@ language=american]{biblatex}      % for reference sections
 
 % path to your CV bibliography (.bib) file; should be same name as
 % your *.tex file if you want to use the makefile
-\addbibresource{./cv.bib}
+\addbibresource{./Garau.bib}
  
 \pagestyle{rest}
 \begin{document}
@@ -319,13 +140,19 @@ language=american]{biblatex}      % for reference sections
 % APPOINTMENTS
 % ======================================
 
-% Uncomment to add if you have a current appointment.
+\section*{Present Appointment}
+\begin{tabularx}{\linewidth}{\twocols}
+  2020 - present & Research Scientist at SINTEF Energy Research, dept. Energy Systems \\
+\end{tabularx}
 
-% \section*{Academic Appointment}
-% \begin{tabularx}{\linewidth}{\twocols}
-%   2018 - present & Assistant Professor of University, University of
-%   University City \\
-% \end{tabularx}
+
+\section*{Previous Appointments}
+\begin{tabularx}{\linewidth}{\twocols}
+  2018 - 2020 & Postdoctoral Fellow at NTNU, dept. of Information Security and Communication Technology \\
+  %2014 - 2015 & Tutor of Electric Circuits for Mechanical and Chemical Engineering Students, University of Cagliari \\
+  2014 & Researcher at the Dept. of Electrical and Electronic Engineering, University of Cagliari
+\end{tabularx}
+
 
 % ======================================
 % EDUCATION
@@ -335,9 +162,9 @@ language=american]{biblatex}      % for reference sections
 
 \section*{Education}
 \begin{tabularx}{\linewidth}{\threecols}
-  YYYY&Program, University&Ph.D. \\ % or YYYY (expected)
-  YYYY&Program, University&M.A. \\
-  YYYY&Program, University&B.A. \\
+  2018 &Industrial Engineering, University of Cagliari&Ph.D. \\ % or YYYY (expected)
+  2013&Energy Engineering, University of Cagliari&M.A. \\
+  2008&Electric Engineering, University of Cagliari&B.A. \\
 \end{tabularx}
 
 % ======================================
@@ -349,11 +176,12 @@ language=american]{biblatex}      % for reference sections
 \section*{Research Interests}
 
 \hspace{-.25em}\begin{itemize*}[itemjoin={{; }}, label={}]
-\item Interest 1
-\item interest 2
-\item interest 3
-\item interest 4
-\item interest 5
+\item Electric Vehicles
+\item Smart Grids
+\item Power system planning and operation
+\item ICT for Smart Grids
+\item Dependability analysis of Smart Grids
+\item Smart Grids simulation
 \end{itemize*}
 
 % ======================================
@@ -364,39 +192,52 @@ language=american]{biblatex}      % for reference sections
 % filter only those references you want to place here.
 
 \begin{refsection}
-\section*{Publications}
+\section*{Journal Publications}
 \nocite{*}                          % cite everything
 \printbibliography[heading = none,  % no heading (e.g., "References")
-keyword = article,                  % FILTER BY THIS KEYWORD
+%keyword = article,                  % FILTER BY THIS KEYWORD
+type=article,
 check = recent,                     % check year filter from above
 env = mybib]                        % use mybib style
 \end{refsection}
 
-% ======================================
-% SUBMITTED PAPERS
-% ======================================
 
 \begin{refsection}
-\section*{Submitted Papers}
-\nocite{*}
-\printbibliography[heading = none,
-keyword = submitted,
-check = recent,
-env = mybib]
+  \section*{Conference Proceedings}
+  \nocite{*}                          % cite everything
+  \printbibliography[heading = none,  % no heading (e.g., "References")
+  %keyword = article,                  % FILTER BY THIS KEYWORD
+  type=inproceedings,
+  check = recent,                     % check year filter from above
+  env = mybib]                        % use mybib style
 \end{refsection}
 
-% ======================================
-% WORKING PAPERS
-% ======================================
 
-\begin{refsection}
-\section*{Working Papers}
-\nocite{*}
-\printbibliography[heading = none,
-keyword = working,
-check = recent,
-env = mybib]
-\end{refsection}
+% % ======================================
+% % SUBMITTED PAPERS
+% % ======================================
+
+% \begin{refsection}
+% \section*{Submitted Papers}
+% \nocite{*}
+% \printbibliography[heading = none,
+% keyword = submitted,
+% check = recent,
+% env = mybib]
+% \end{refsection}
+
+% % ======================================
+% % WORKING PAPERS
+% % ======================================
+
+% \begin{refsection}
+% \section*{Working Papers}
+% \nocite{*}
+% \printbibliography[heading = none,
+% keyword = working,
+% check = recent,
+% env = mybib]
+% \end{refsection}
 
 % ======================================
 % PRESENTATIONS
@@ -406,26 +247,26 @@ env = mybib]
 % invited presentations. If you only have one or the other, just
 % delete the subsections and have one PUBLICATIONS section.
 
-\section*{Presentations}
-\subsection*{Peer-reviewed conference presentations}
-\begin{refsection}
-\nocite{*}
-\printbibliography[heading = none,
-keyword = conference,               % must have "conference" AND 
-keyword = peer,                     % "peer" to differentiate from "invited"
-env = mybib,
-check = recent]                     
-\end{refsection}                    
+% \section*{Presentations}
+% \subsection*{Peer-reviewed conference presentations}
+% \begin{refsection}
+% \nocite{*}
+% \printbibliography[heading = none,
+% keyword = conference,               % must have "conference" AND 
+% keyword = peer,                     % "peer" to differentiate from "invited"
+% env = mybib,
+% check = recent]                     
+% \end{refsection}                    
 
-\subsection*{Invited presentations}
-\begin{refsection}
-\nocite{*}
-\printbibliography[heading = none,
-keyword = conference,               % must have "conference" AND 
-keyword = invited,                  % "invited" to differentiate from "peer"
-env = mybib,
-check = recent]                   
-\end{refsection}                   
+% \subsection*{Invited presentations}
+% \begin{refsection}
+% \nocite{*}
+% \printbibliography[heading = none,
+% keyword = conference,               % must have "conference" AND 
+% keyword = invited,                  % "invited" to differentiate from "peer"
+% env = mybib,
+% check = recent]                   
+% \end{refsection}                   
 
 % ======================================
 % TEACHING EXPERIENCE
@@ -437,21 +278,42 @@ check = recent]
 
 \section*{Teaching}
 
-\subsection*{Instructor}
-\subsubsection*{University $\mid$ Department}
-\begin{tabularx}{\linewidth}{\twocols}
-YYYY&COURSE NUM: \textit{Course name} \\
-&\hspace{1em}One sentence description (optional)  \\
-&\hspace{1em}{\itshape Website/Course materials:}
-\href{https://github.com/btskinner/tex\_cv}{github.com/btskinner/tex\_cv} \\
-\end{tabularx}
+% \subsection*{Instructor}
+% \subsubsection*{University $\mid$ Department}
+% \begin{tabularx}{\linewidth}{\twocols}
+% YYYY&COURSE NUM: \textit{Course name} \\
+% &\hspace{1em}One sentence description (optional)  \\
+% &\hspace{1em}{\itshape Website/Course materials:}
+% \href{https://github.com/btskinner/tex\_cv}{github.com/btskinner/tex\_cv} \\
+% \end{tabularx}
 
 \subsection*{Teaching Assistant}
-\subsubsection*{University $\mid$ Department}
+\subsubsection*{NTNU $\mid$ Department of Information Security and Communication Technologies}
 \begin{tabularx}{\linewidth}{\twocols}
-YYYY & COURSE NUM: \textit{Course name} \\
-&\hspace{1em}	\textit{Instructor:} Instructor of record  \\
+  2018 & TTM4110 – Dependability and Performance with Discrete Event Simulation - \textit{Fundamentals of Probability}\\
+  %&\hspace{1em}	\textit{Instructor:} Instructor of record  \\
 \end{tabularx}
+\subsubsection*{University of Cagliari $\mid$ Department of Electrical and Electronic Engineering}
+\begin{tabularx}{\linewidth}{\twocols}
+2016 - 2017 & Power Systems Generation and Economics - \textit{Distributed Generation / OpenDSS training}\\
+2014 - 2015 & Electric Circuits - \textit{Exercises and tutoring} \\
+%&\hspace{1em}	\textit{Instructor:} Instructor of record  \\
+\end{tabularx}
+
+\subsection*{Thesis supervision and co-supervision}
+\subsubsection*{NTNU $\mid$ Department of Information Security and Communication Technologies}
+\begin{tabularx}{\linewidth}{\twocols}
+  2020 & Bendik Balstad Deraas  - \textit{Modelling and Analysis of Interdependencies between Financial, Communication and Power System
+  Infrastructures in a Smart Grid Scenario}\\ 
+  2020 & Håvard Sandgrind Refvik - \textit{Robustness of short-term load forecasting models for smart grids}
+  %&\hspace{1em}	\textit{Instructor:} Instructor of record  \\
+\end{tabularx}
+\subsubsection*{University of Cagliari $\mid$ Department of Electrical and Electronic Engineering}
+\begin{tabularx}{\linewidth}{\twocols}
+2017 & Gian Luigi Cuccu - \textit{Strumenti di simulazione di sistemi TLC per Smart Grid}\\
+%&\hspace{1em}	\textit{Instructor:} Instructor of record  \\
+\end{tabularx}
+
 
 % ======================================
 % FELLOWSHIPS AND HONORS
@@ -459,12 +321,12 @@ YYYY & COURSE NUM: \textit{Course name} \\
 
 % Again, use a table for nicely aliged elements.
 
-\section*{Awards, Fellowships, and Honors}
-\begin{tabularx}{\linewidth}{\threecols}
-YYYY & Honor \\
-YYYY - YYYY & Fellowship & \$ AMOUNT \\ % if normal in your field
+% \section*{Awards, Fellowships, and Honors}
+% \begin{tabularx}{\linewidth}{\threecols}
+% YYYY & Honor \\
+% YYYY - YYYY & Fellowship & \$ AMOUNT \\ % if normal in your field
 
-\end{tabularx}
+% \end{tabularx}
 
 % ======================================
 % PROFESSIONAL MEMBERSHIPS
@@ -473,15 +335,15 @@ YYYY - YYYY & Fellowship & \$ AMOUNT \\ % if normal in your field
 % This time the list is separated by bullets as an example; use
 % whatever seems most aesthetically pleasing to your eyes.
 
-\section*{Professional Memberships}
+% \section*{Professional Memberships}
 
-\hspace{-.25em}\begin{itemize*}[itemjoin={{ $\bullet$}}, label={}]
-\item Organization 1
-\item Organization 2
-\item Organization 3
-\item Organization 4
-\item Organization 5
-\end{itemize*}
+% \hspace{-.25em}\begin{itemize*}[itemjoin={{ $\bullet$}}, label={}]
+% \item Organization 1
+% \item Organization 2
+% \item Organization 3
+% \item Organization 4
+% \item Organization 5
+% \end{itemize*}
 
 % ======================================
 % OTHER
