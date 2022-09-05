@@ -114,7 +114,7 @@ language=american]{biblatex}      % for reference sections
 \hspace*{-\parindent}%
 \begin{center}
   \vspace{-2em}
-  {\LARGE\scshape \myname} \\
+  {\Huge \myname} \\
 \end{center}
 \begin{minipage}[t]{.6\linewidth}
 \address
@@ -129,7 +129,7 @@ language=american]{biblatex}      % for reference sections
 \end{minipage}
 \begin{center}
   \vspace{-.5em}
-  \rule{\textwidth}{1pt}  
+  \doublerule
 \end{center}
 
 % ==============================================================================
@@ -191,19 +191,21 @@ language=american]{biblatex}      % for reference sections
 % Use the same keyword that you've placed in your bib file entry to
 % filter only those references you want to place here.
 
+\section*{Publications and talks}
+
 \begin{refsection}
-\section*{Journal Publications}
-\nocite{*}                          % cite everything
-\printbibliography[heading = none,  % no heading (e.g., "References")
-%keyword = article,                  % FILTER BY THIS KEYWORD
-type=article,
-check = recent,                     % check year filter from above
-env = mybib]                        % use mybib style
+  \subsection*{Journal articles}
+  \nocite{*}                          % cite everything
+  \printbibliography[heading = none,  % no heading (e.g., "References")
+  %keyword = article,                  % FILTER BY THIS KEYWORD
+  type=article,
+  check = recent,                     % check year filter from above
+  env = mybib]                        % use mybib style
 \end{refsection}
 
 
 \begin{refsection}
-  \section*{Conference Proceedings}
+  \subsection*{Conference Presentations}
   \nocite{*}                          % cite everything
   \printbibliography[heading = none,  % no heading (e.g., "References")
   %keyword = article,                  % FILTER BY THIS KEYWORD

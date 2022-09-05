@@ -9,6 +9,12 @@
 \newcolumntype{\twocols}{>{\RR}p{1.25in}>{\RR}X}
 \newcolumntype{\threecols}{>{\RR}p{1.25in}>{\RR}X>{\RL}p{1in}}
 
+
+\newcommand{\doublerule}[1][.4pt]{%
+  \noindent
+  \makebox[0pt][l]{\rule[.7ex]{\linewidth}{#1}}%
+  \rule[.3ex]{\linewidth}{#1}}
+
 % -------------------------------
 % BibLaTeX sorting scheme
 % -------------------------------
@@ -131,11 +137,11 @@
 
 % section
 \titleformat{\section}[display]
-{\Large\bfseries}
+{\Large\scshape}
 {\filleft\Large\sectiontitlename~\thesection}
 {}
 {\vspace{-1ex}}
-[]
+[\titlerule]
 
 % subsections
 \titleformat{\subsection}[display]
